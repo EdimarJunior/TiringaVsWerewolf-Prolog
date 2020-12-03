@@ -33,3 +33,6 @@ bubble(X,[Y|T],[Y|NT],Max):-
 bubble(X,[Y|T],[X|NT],Max):-
     [_,B1] = X, [_,B2] = Y, 
     B1 =< B2, bubble(Y,T,NT,Max).
+
+list_empty([]):-true.
+list_empty([_|_]):-false.
