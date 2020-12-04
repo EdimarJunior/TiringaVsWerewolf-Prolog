@@ -1,3 +1,43 @@
+list_empty([]):-true.
+list_empty([_|_]):-false.
+
+findElement([], _, _, R) :- R = [-1, -1].
+findElement([H|T], Row, Element, R) :- 
+    (NRow is Row + 1),
+    findInRow(H, 0, Element, Col),
+    (Col =\= (-1) -> R = [Row, Col];
+    findElement(T, NRow, Element, R)).
+
+findInRow([], _, _, R) :- R = -1.
+findInRow([H|T], CR, E, R) :- 
+    (NCol is CR + 1),
+    ((H =:= E) -> R = CR;
+    findInRow(T, NCol, E, R)).
+
+countRows([], Count, R) :- R = Count.
+countRows([_|T], Count, R) :- 
+    NC is Count + 1,
+    countRows(T, NC, R).
+
+countColumns([H|_], R) :- 
+    countRows(H, 0, R).
+
+setElement([], _, _, R) :- R = [].
+setElement([H|T], [X,Y], E, R) :- 
+    NX is X - 1,
+    ((X =:= 0) -> setElementAux(H, Y, E, L), append([L], T, NL), R = NL;
+    setElement(T, [NX,Y], E, NL), append([H], NL, R)).
+
+setElementAux([], _, _, R) :- R = [].
+setElementAux([H|T], Y, E, R) :-
+    NY is Y - 1,
+    ((Y =:= 0) -> append([E], T, NL), R = NL;
+    setElementAux(T, NY, E, NL), append([H], NL, R)).
+
+getElementPosition(Mat, Row, Col, Val) :- nth0(Row, Mat, Elem), nth0(Col, Elem, Val).
+
+/* GET THE BEST PLAYER */
+
 ﻿getTheBestPlayer() :-
     read_file_to_string("../ranking.txt", Players, []),
     split_string(Players, "\n", "", PlayersList),
@@ -33,6 +73,3 @@ bubble(X,[Y|T],[Y|NT],Max):-
 bubble(X,[Y|T],[X|NT],Max):-
     [_,B1] = X, [_,B2] = Y, 
     B1 =< B2, bubble(Y,T,NT,Max).
-
-list_empty([]):-true.
-list_empty([_|_]):-false.
