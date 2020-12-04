@@ -38,7 +38,7 @@ getElementPosition(Mat, Row, Col, Val) :- nth0(Row, Mat, Elem), nth0(Col, Elem, 
 
 /* GET THE BEST PLAYER */
 
-﻿getTheBestPlayer() :-
+getTheBestPlayer() :-
     read_file_to_string("../ranking.txt", Players, []),
     split_string(Players, "\n", "", PlayersList),
     splitPlayer(PlayersList, PlayersList2),
